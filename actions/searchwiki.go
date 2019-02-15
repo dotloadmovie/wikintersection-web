@@ -8,11 +8,6 @@ import (
 	"net/http"
 )
 
-type JOutput struct {
-	Name string
-	Data []string
-}
-
 func SearchWiki(ctx echo.Context) error {
 	output := make([]string, 0)
 
