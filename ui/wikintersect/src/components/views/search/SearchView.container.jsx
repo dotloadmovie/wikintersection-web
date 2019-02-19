@@ -9,32 +9,38 @@ class SearchViewContainer extends Component {
         super(props)
 
         this.state = {
-            results: null
-        }
+            results: props.results
+        };
+    }
+
+    handleSearchValueInput = (evt) => {
+        this.props.handleSearchValueInput(evt.target.value, this.props.index);
     }
 
     handleSearchUpdated = (results) => {
-
-        this.setState({
-            results
-        });
+       this.props.handleSearchUpdated(results, this.props.index);
     }
 
     handleSearchClick = (value) => {
-        this.props.api.getSearch(value, this.handleSearchUpdated)
+        this.props.api.getSearch(value, this.handleSearchUpdated);
     }
 
     render() {
         const events = {
-            handleSearchClick: this.handleSearchClick
-        }
+            handleSearchClick: this.handleSearchClick,
+            handleSelectRow: this.props.handleSelectRow,
+            handleSearchValueInput: this.handleSearchValueInput
+        };
 
-        const {results} = this.state;
+        const {index, placeholder, results, searchValue} = this.props;
 
         return (
            SearchViewComponent({
                events,
-               results
+               results,
+               index,
+               placeholder,
+               searchValue
            })
         );
     }

@@ -4,7 +4,7 @@ import CheckboxComponent from "./Checkbox.component";
 class CheckboxContainer extends Component {
 
     handleChange = (evt) => {
-        this.props.handleChange(this.props.keyValue)
+        this.props.handleChange(this.props.row)
     }
 
     render() {

@@ -13,10 +13,12 @@ class SearchResultViewContainer extends Component {
         }
     }
 
-    handleChange = (checkedValue) => {
+    handleChange = (row) => {
         this.setState({
-            checkedValue
+            checkedValue: row.key
         })
+
+        this.props.handleSelectRow(row, this.props.index)
     }
 
     render() {
@@ -32,7 +34,7 @@ class SearchResultViewContainer extends Component {
             dataIndex: 'count',
             key: 'count',
             render: (item, row) => {
-                return (<CheckboxContainer handleChange={this.handleChange} keyValue={row.key} checkedState={this.state.checkedValue === row.key} />)
+                return (<CheckboxContainer handleChange={this.handleChange} row={row} checkedState={this.state.checkedValue === row.key} />)
             }
         }, {
             title: 'Article',
