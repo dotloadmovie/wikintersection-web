@@ -1,8 +1,12 @@
 import React from 'react';
 
-const CompareViewComponent = () => {
+import {Table} from 'antd'
+
+const CompareViewComponent = ({columns, data}) => {
     return (
-        <div>Compare View Here</div>
+        <div>
+            <Table columns={columns} dataSource={data} pagination={{ pageSize: 100 }} />
+        </div>
     );
 }
 

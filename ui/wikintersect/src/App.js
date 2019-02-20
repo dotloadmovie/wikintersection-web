@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Layout, Row, Col, Button} from 'antd';
+import {Layout, Row, Col, Button, Spin} from 'antd';
 
 import MainNavigationContainer from './components/navigation/MainNavigation.container';
 import SearchViewContainer from './components/views/search/SearchView.container';
@@ -20,11 +20,12 @@ class App extends Component {
             search1: null,
             search2: null,
             results1: null,
-            results2: null
+            results2: null,
+            compareResult: null
         }
 
         this.api = new API({
-            endpoint: 'http://localhost:5002'
+            endpoint: 'http://localhost:1323'
         })
     }
 
@@ -41,12 +42,6 @@ class App extends Component {
 
     }
 
-    handleSubmitResults = () => {
-        this.setState({
-            currView: 'results'
-        })
-    }
-
     handleClearSearch = () => {
         this.setState({
             searchValue1: null,
@@ -55,7 +50,8 @@ class App extends Component {
             search2: null,
             results1: null,
             results2: null,
-            currView: 'search'
+            currView: 'search',
+            compareResult: null
         })
     }
 
@@ -81,6 +77,22 @@ class App extends Component {
                 searchValue2: value
             })
         }
+    }
+
+    handleSubmit = () => {
+        this.setState({
+            serverRequestInFlight: true,
+            currView: 'compare'
+        });
+
+        this.api.getIntersection(this.state.search1.value, this.state.search2.value, this.handleCompareResultUpdated)
+    }
+
+    handleCompareResultUpdated = (result) => {
+        this.setState({
+            compareResult: result,
+            serverRequestInFlight: false
+        })
     }
 
     buildTitle() {
@@ -132,7 +144,7 @@ class App extends Component {
 
                     <Col md={12} sm={12} xs={12} style={{textAlign:'right'}}>
                         {(this.state.search1 && this.state.search2) &&
-                        <Button type="primary" onClick={this.handleSubmitResults}>Submit</Button>
+                        <Button type="primary" onClick={this.handleSubmit}>Submit</Button>
                         }
                     </Col>
                 </Row>
@@ -142,6 +154,15 @@ class App extends Component {
     }
 
     renderCompare() {
+
+        if(this.state.serverRequestInFlight) {
+            return (
+                <div className="spin-position">
+                    <Spin />
+                </div>
+            );
+        }
+
         return (
             <div>
                 <Row>
@@ -152,11 +173,21 @@ class App extends Component {
                     <Col md={12} sm={24}>
                         <CompareViewContainer
                             api={this.api}
+                            results={this.state.compareResult}
                         />
                     </Col>
                     <Col md={6} sm={24} style={{marginBottom: '24px'}}>
 
                     </Col>
+                </Row>
+
+                <Row>
+                    <Col md={12} sm={6} xs={12}>
+                        {(this.state.results1 || this.state.results2) &&
+                        <Button onClick={this.handleClearSearch}>Clear</Button>
+                        }
+                    </Col>
+
                 </Row>
 
             </div>
@@ -168,7 +199,7 @@ class App extends Component {
             return this.renderSearch();
         }
 
-        if(this.state.currView === 'results') {
+        if(this.state.currView === 'compare') {
             return this.renderCompare();
         }
     }
@@ -195,7 +226,7 @@ class App extends Component {
                     </div>
                 </Content>
 
-                <Footer style={{textAlign: 'left'}}><a href={'http://www.github.com/dotloadmovie/wikintersect-web'}>Source</a></Footer>
+                <Footer style={{textAlign: 'left'}}><a rel="noopener noreferrer" target="_blank" href={'http://www.github.com/dotloadmovie/wikintersection-web'}>Source</a></Footer>
             </Layout>
         );
     }

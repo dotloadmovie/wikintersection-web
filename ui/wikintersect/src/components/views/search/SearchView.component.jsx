@@ -1,8 +1,8 @@
 import React from 'react'
-import {Input} from 'antd'
+import {Input, Spin} from 'antd'
 import SearchResultViewContainer from "../searchresult/SearchResultView.container";
 
-const SearchViewComponent = ({events, results, index, placeholder, searchValue}) => {
+const SearchViewComponent = ({events, results, index, placeholder, searchValue, serverRequestInFlight}) => {
     const Search = Input.Search;
 
     return (
@@ -15,7 +15,12 @@ const SearchViewComponent = ({events, results, index, placeholder, searchValue})
                 onSearch={events.handleSearchClick}
                 onChange={events.handleSearchValueInput}
             />
-            {results &&
+            {serverRequestInFlight &&
+            <div className="spin-position">
+                <Spin />
+            </div>
+            }
+            {results && !serverRequestInFlight &&
             <SearchResultViewContainer
                 results={results}
                 index={index}

@@ -9,7 +9,8 @@ class SearchViewContainer extends Component {
         super(props)
 
         this.state = {
-            results: props.results
+            results: props.results,
+            serverRequestInFlight: false
         };
     }
 
@@ -18,10 +19,18 @@ class SearchViewContainer extends Component {
     }
 
     handleSearchUpdated = (results) => {
+        this.setState({
+            serverRequestInFlight: false
+        });
+
        this.props.handleSearchUpdated(results, this.props.index);
     }
 
     handleSearchClick = (value) => {
+        this.setState({
+            serverRequestInFlight: true
+        });
+
         this.props.api.getSearch(value, this.handleSearchUpdated);
     }
 
@@ -33,6 +42,7 @@ class SearchViewContainer extends Component {
         };
 
         const {index, placeholder, results, searchValue} = this.props;
+        const {serverRequestInFlight} = this.state;
 
         return (
            SearchViewComponent({
@@ -40,7 +50,8 @@ class SearchViewContainer extends Component {
                results,
                index,
                placeholder,
-               searchValue
+               searchValue,
+               serverRequestInFlight
            })
         );
     }

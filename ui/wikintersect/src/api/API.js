@@ -6,7 +6,7 @@ class API {
     }
 
     getSearch(searchTerm, callback) {
-        const url = this.endpoint + '/search';
+        const url = this.endpoint + '/search/'+searchTerm;
         let result = null;
 
         fetch(url)
@@ -18,6 +18,20 @@ class API {
                 callback(result);
             })
 
+    }
+
+    getIntersection(search1, search2, callback) {
+        const url = this.endpoint + '/compare/'+search1 +'/'+search2;
+        let result = null;
+
+        fetch(url)
+            .then((response) => {
+                return response.json();
+            })
+            .then((json) => {
+                result = json.Data;
+                callback(result)
+            })
     }
 }
 
