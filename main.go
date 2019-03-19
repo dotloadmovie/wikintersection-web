@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/dotloadmovie/wikintersect-web/actions"
+	"github.com/dotloadmovie/wikintersection-web/actions"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 	"html/template"
