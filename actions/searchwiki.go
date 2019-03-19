@@ -2,7 +2,7 @@ package actions
 
 import (
 	"encoding/json"
-	"github.com/dotloadmovie/wikintersect/network"
+	"github.com/dotloadmovie/wikintersection/network"
 	"github.com/labstack/echo"
 	"log"
 	"net/http"

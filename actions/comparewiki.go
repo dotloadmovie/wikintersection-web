@@ -2,8 +2,8 @@ package actions
 
 import (
 	"encoding/json"
-	"github.com/dotloadmovie/wikintersect/network"
-	"github.com/dotloadmovie/wikintersect/utils"
+	"github.com/dotloadmovie/wikintersection/network"
+	"github.com/dotloadmovie/wikintersection/utils"
 	"github.com/labstack/echo"
 	"net/http"
 	"log"
