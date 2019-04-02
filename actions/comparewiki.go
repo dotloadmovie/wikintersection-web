@@ -10,6 +10,16 @@ import (
 )
 
 func CompareWiki(ctx echo.Context) error {
+	params := map[string]string {
+		"format": "json",
+		"formatversion": "2",
+		"action": "query",
+		"prop": "links",
+		"pllimit": "200",
+	}
+
+	network.InitWiki(params)
+
 	firstResults := network.GetWiki(ctx.Param("article1"))
 	secondResults := network.GetWiki(ctx.Param("article2"))
 
