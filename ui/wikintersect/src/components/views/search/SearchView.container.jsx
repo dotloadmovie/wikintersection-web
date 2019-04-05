@@ -1,9 +1,12 @@
 import {Component} from 'react';
+import {connect} from "react-redux";
+
+import {fetchSearchResult, searchValueInput} from '../../../actionCreators/'
+import {getURIBase} from "../../../config";
 
 import SearchViewComponent from './SearchView.component';
 import "./SearchView.css";
-import {fetchSearchResult, searchValueInput} from '../../../actionCreators/'
-import {connect} from "react-redux";
+
 
 const mapStateToProps = (state) => {
     return {
@@ -32,7 +35,7 @@ class SearchViewContainer extends Component {
     }
 
     handleSearchClick = (value) => {
-        this.props.fetchSearchResult('http://localhost:1323/search/' + value, this.props.index);
+        this.props.fetchSearchResult(`${getURIBase()}/search/${value}`, this.props.index);
     }
 
     render() {

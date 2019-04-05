@@ -1,7 +1,7 @@
 import {Component} from 'react'
-import CompareViewComponent from "./CompareView.component";
 import {connect} from "react-redux";
 
+import CompareViewComponent from "./CompareView.component";
 
 const mapStateToProps = (state) => {
     return {

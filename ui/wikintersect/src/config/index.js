@@ -7,3 +7,7 @@ export const buildDefaultState = () => {
         serverRequestInFlight: false
     }
 }
+
+export const getURIBase = () => {
+    return 'http://localhost:1323'
+}

@@ -5,11 +5,10 @@ import {connect} from 'react-redux';
 import MainNavigationContainer from './components/navigation/MainNavigation.container';
 import SearchViewContainerConnected from './components/views/search/SearchView.container';
 import CompareViewContainerConnected from './components/views/compare/CompareView.container';
-
-import {clearSearch, submitCompare, changeView} from './actionCreators'
-
-
 import './App.css';
+
+import {clearSearch, submitCompare, changeView} from './actionCreators';
+import {getURIBase} from "./config";
 
 
 const mapStateToProps = (state) => {
@@ -29,7 +28,7 @@ const mapDispatchToProps = (dispatch) => {
         },
 
         submitCompare: (search0, search1) => {
-            return dispatch(submitCompare('http://localhost:1323/compare/' + search0 + '/' + search1))
+            return dispatch(submitCompare(`${getURIBase()}/compare/${search0}/${search1}`))
         },
 
         changeView: (view) => {
