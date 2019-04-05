@@ -6,7 +6,7 @@ import MainNavigationContainer from './components/navigation/MainNavigation.cont
 import SearchViewContainerConnected from './components/views/search/SearchView.container';
 import CompareViewContainerConnected from './components/views/compare/CompareView.container';
 
-import {clearSearch, submitCompare} from './actionCreators'
+import {clearSearch, submitCompare, changeView} from './actionCreators'
 
 
 import './App.css';
@@ -15,11 +15,10 @@ import './App.css';
 const mapStateToProps = (state) => {
     return {
         currView: state.currView,
-        results1: state.results1,
-        results2: state.results2,
         serverRequestInFlight: state.serverRequestInFlight,
+        search0: state.search0,
         search1: state.search1,
-        search2: state.search2
+        compareResults: state.compareResults
     }
 }
 
@@ -29,8 +28,12 @@ const mapDispatchToProps = (dispatch) => {
             return dispatch(clearSearch())
         },
 
-        submitCompare: () => {
-            return dispatch(submitCompare())
+        submitCompare: (search0, search1) => {
+            return dispatch(submitCompare('http://localhost:1323/compare/' + search0 + '/' + search1))
+        },
+
+        changeView: (view) => {
+            return dispatch(changeView(view));
         }
     }
 }
@@ -38,11 +41,13 @@ const mapDispatchToProps = (dispatch) => {
 class App extends Component {
 
     handleClearSearch = () => {
+       this.props.changeView('search');
        this.props.clearSearch();
     }
 
     handleSubmit = () => {
-       this.props.submitCompare();
+       this.props.changeView('compare');
+       this.props.submitCompare(this.props.search0.search, this.props.search1.search);
     }
 
     buildTitle() {
@@ -56,8 +61,8 @@ class App extends Component {
                     <Col md={11} sm={24} style={{marginBottom: '24px'}}>
                         {this.props.currView === 'search' &&
                         <SearchViewContainerConnected
-                            index={1}
-                            placeholder="Search for a first Wikipedia entry"
+                            index={0}
+                            placeholder="Search for a first Wikipedia entry"x
                         />
                         }
                     </Col>
@@ -66,7 +71,7 @@ class App extends Component {
                     <Col md={11} sm={24} style={{marginBottom: '24px'}}>
                         {this.props.currView === 'search' &&
                         <SearchViewContainerConnected
-                            index={2}
+                            index={1}
                             placeholder="Search for a second Wikipedia entry"
                         />
                         }
@@ -75,13 +80,13 @@ class App extends Component {
 
                 <Row>
                     <Col md={12} sm={6} xs={12}>
-                        {(this.props.results1 || this.props.results2) &&
+                        {(this.props.search0.results || this.props.search1.results) &&
                             <Button onClick={this.handleClearSearch}>Clear</Button>
                         }
                     </Col>
 
                     <Col md={12} sm={12} xs={12} style={{textAlign:'right'}}>
-                        {(this.props.search1 && this.props.search2) &&
+                        {(this.props.search0.search && this.props.search1.search) &&
                         <Button type="primary" onClick={this.handleSubmit}>Submit</Button>
                         }
                     </Col>
@@ -118,9 +123,7 @@ class App extends Component {
 
                 <Row>
                     <Col md={12} sm={6} xs={12}>
-                        {(this.state.results1 || this.state.results2) &&
                         <Button onClick={this.handleClearSearch}>Clear</Button>
-                        }
                     </Col>
 
                 </Row>

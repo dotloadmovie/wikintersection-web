@@ -2,47 +2,51 @@ import {Component} from 'react';
 
 import SearchViewComponent from './SearchView.component';
 import "./SearchView.css";
+import {fetchSearchResult, searchValueInput} from '../../../actionCreators/'
+import {connect} from "react-redux";
+
+const mapStateToProps = (state) => {
+    return {
+        currView: state.currView,
+        search0: state.search0,
+        search1: state.search1
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        fetchSearchResult: (url, searchIndex) => {
+            return dispatch(fetchSearchResult(url, searchIndex))
+        },
+        searchValueInput: (value, searchIndex) => {
+            return dispatch(searchValueInput(value, searchIndex))
+        }
+    }
+}
+
 
 class SearchViewContainer extends Component {
 
-    constructor(props) {
-        super(props)
-
-        this.state = {
-            results: props.results,
-            serverRequestInFlight: false
-        };
-    }
-
     handleSearchValueInput = (evt) => {
-        this.props.handleSearchValueInput(evt.target.value, this.props.index);
-    }
-
-    handleSearchUpdated = (results) => {
-        this.setState({
-            serverRequestInFlight: false
-        });
-
-       this.props.handleSearchUpdated(results, this.props.index);
+        this.props.searchValueInput(evt.target.value, this.props.index);
     }
 
     handleSearchClick = (value) => {
-        this.setState({
-            serverRequestInFlight: true
-        });
-
-        this.props.api.getSearch(value, this.handleSearchUpdated);
+        this.props.fetchSearchResult('http://localhost:1323/search/' + value, this.props.index);
     }
 
     render() {
         const events = {
             handleSearchClick: this.handleSearchClick,
-            handleSelectRow: this.props.handleSelectRow,
             handleSearchValueInput: this.handleSearchValueInput
         };
 
-        const {index, placeholder, results, searchValue} = this.props;
-        const {serverRequestInFlight} = this.state;
+        const {index, placeholder} = this.props;
+
+        const serverRequestInFlight = this.props['search' + index].serverRequestInFlight;
+        const searchValue = this.props['search' + index].value;
+        const results = this.props['search' + index].results;
+
 
         return (
            SearchViewComponent({
@@ -57,4 +61,8 @@ class SearchViewContainer extends Component {
     }
 }
 
-export default SearchViewContainer;
+
+
+const SearchViewContainerConnected = connect(mapStateToProps, mapDispatchToProps)(SearchViewContainer)
+
+export default SearchViewContainerConnected;
