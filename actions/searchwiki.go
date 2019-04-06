@@ -11,8 +11,18 @@ import (
 func SearchWiki(ctx echo.Context) error {
 	output := make([]string, 0)
 
+	params := map[string]string {
+		"action": "query",
+		"srlimit": "300",
+		"list": "search",
+		"&utf8":"",
+		"format":"json",
+	}
+
+	network.InitSearch(params)
+
 	if ctx.Param("search") != "" {
-		output = network.GetSearch(ctx.Param("search"))
+		output = network.GetSearch(ctx.Param("search"), )
 	}
 
 	enc := JOutput{"SearchResult", output}

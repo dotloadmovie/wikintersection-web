@@ -1,5 +1,13 @@
 import {Component} from 'react'
+import {connect} from "react-redux";
+
 import CompareViewComponent from "./CompareView.component";
+
+const mapStateToProps = (state) => {
+    return {
+        results: state.compareResult
+    }
+}
 
 class CompareViewContainer extends Component {
     render() {
@@ -32,4 +40,6 @@ class CompareViewContainer extends Component {
     }
 }
 
-export default CompareViewContainer;
+const CompareViewContainerConnected = connect(mapStateToProps)(CompareViewContainer)
+
+export default CompareViewContainerConnected;

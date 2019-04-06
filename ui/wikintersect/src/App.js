@@ -1,102 +1,56 @@
 import React, {Component} from 'react';
 import {Layout, Row, Col, Button, Spin} from 'antd';
+import {connect} from 'react-redux';
 
 import MainNavigationContainer from './components/navigation/MainNavigation.container';
-import SearchViewContainer from './components/views/search/SearchView.container';
-import CompareViewContainer from './components/views/compare/CompareView.container';
-
-import API from './api/API'
-
+import SearchViewContainerConnected from './components/views/search/SearchView.container';
+import CompareViewContainerConnected from './components/views/compare/CompareView.container';
 import './App.css';
 
+import {clearSearch, submitCompare, changeView} from './actionCreators';
+import {getURIBase} from "./config";
+
+
+const mapStateToProps = (state) => {
+    return {
+        currView: state.currView,
+        serverRequestInFlight: state.serverRequestInFlight,
+        search0: state.search0,
+        search1: state.search1,
+        compareResults: state.compareResults
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        clearSearch: () => {
+            return dispatch(clearSearch())
+        },
+
+        submitCompare: (search0, search1) => {
+            return dispatch(submitCompare(`${getURIBase()}/compare/${search0}/${search1}`))
+        },
+
+        changeView: (view) => {
+            return dispatch(changeView(view));
+        }
+    }
+}
 
 class App extends Component {
 
-    constructor(props) {
-        super(props)
-
-        this.state = {
-            currView: 'search',
-            search1: null,
-            search2: null,
-            results1: null,
-            results2: null,
-            compareResult: null
-        }
-
-        this.api = new API({
-            endpoint: 'http://localhost:1323'
-        })
-    }
-
-    handleSelectRow = (row, index) => {
-        if(index === 1) {
-            this.setState({
-                search1: row
-            })
-        } else {
-            this.setState({
-                search2: row
-            })
-        }
-
-    }
-
     handleClearSearch = () => {
-        this.setState({
-            searchValue1: null,
-            searchValue2: null,
-            search1: null,
-            search2: null,
-            results1: null,
-            results2: null,
-            currView: 'search',
-            compareResult: null
-        })
-    }
-
-    handleSearchUpdated = (result, index) => {
-        if(index === 1) {
-            this.setState({
-                results1: result
-            })
-        } else {
-            this.setState({
-                results2: result
-            })
-        }
-    }
-
-    handleSearchValueInput = (value, index) => {
-        if(index === 1) {
-            this.setState({
-                searchValue1: value
-            })
-        } else {
-            this.setState({
-                searchValue2: value
-            })
-        }
+       this.props.changeView('search');
+       this.props.clearSearch();
     }
 
     handleSubmit = () => {
-        this.setState({
-            serverRequestInFlight: true,
-            currView: 'compare'
-        });
-
-        this.api.getIntersection(this.state.search1.value, this.state.search2.value, this.handleCompareResultUpdated)
-    }
-
-    handleCompareResultUpdated = (result) => {
-        this.setState({
-            compareResult: result,
-            serverRequestInFlight: false
-        })
+       this.props.changeView('compare');
+       this.props.submitCompare(this.props.search0.search, this.props.search1.search);
     }
 
     buildTitle() {
-        return (this.state.currView === 'search')? 'Search' : 'Results'
+        return (this.props.currView === 'search')? 'Search' : 'Results'
     }
 
     renderSearch() {
@@ -104,32 +58,20 @@ class App extends Component {
             <div>
                 <Row>
                     <Col md={11} sm={24} style={{marginBottom: '24px'}}>
-                        {this.state.currView === 'search' &&
-                        <SearchViewContainer
-                            api={this.api}
-                            index={1}
-                            searchValue={this.state.searchValue1}
-                            results={this.state.results1}
-                            placeholder="Search for a first Wikipedia entry"
-                            handleSelectRow={this.handleSelectRow}
-                            handleSearchUpdated={this.handleSearchUpdated}
-                            handleSearchValueInput={this.handleSearchValueInput}
+                        {this.props.currView === 'search' &&
+                        <SearchViewContainerConnected
+                            index={0}
+                            placeholder="Search for a first Wikipedia entry"x
                         />
                         }
                     </Col>
 
                     <Col md={2} sm={24} />
                     <Col md={11} sm={24} style={{marginBottom: '24px'}}>
-                        {this.state.currView === 'search' &&
-                        <SearchViewContainer
-                            api={this.api}
-                            index={2}
-                            results={this.state.results2}
-                            searchValue={this.state.searchValue2}
+                        {this.props.currView === 'search' &&
+                        <SearchViewContainerConnected
+                            index={1}
                             placeholder="Search for a second Wikipedia entry"
-                            handleSelectRow={this.handleSelectRow}
-                            handleSearchUpdated={this.handleSearchUpdated}
-                            handleSearchValueInput={this.handleSearchValueInput}
                         />
                         }
                     </Col>
@@ -137,13 +79,13 @@ class App extends Component {
 
                 <Row>
                     <Col md={12} sm={6} xs={12}>
-                        {(this.state.results1 || this.state.results2) &&
+                        {(this.props.search0.results || this.props.search1.results) &&
                             <Button onClick={this.handleClearSearch}>Clear</Button>
                         }
                     </Col>
 
                     <Col md={12} sm={12} xs={12} style={{textAlign:'right'}}>
-                        {(this.state.search1 && this.state.search2) &&
+                        {(this.props.search0.search && this.props.search1.search) &&
                         <Button type="primary" onClick={this.handleSubmit}>Submit</Button>
                         }
                     </Col>
@@ -155,7 +97,7 @@ class App extends Component {
 
     renderCompare() {
 
-        if(this.state.serverRequestInFlight) {
+        if(this.props.serverRequestInFlight) {
             return (
                 <div className="spin-position">
                     <Spin />
@@ -171,10 +113,7 @@ class App extends Component {
                     </Col>
 
                     <Col md={12} sm={24}>
-                        <CompareViewContainer
-                            api={this.api}
-                            results={this.state.compareResult}
-                        />
+                        <CompareViewContainerConnected />
                     </Col>
                     <Col md={6} sm={24} style={{marginBottom: '24px'}}>
 
@@ -183,9 +122,7 @@ class App extends Component {
 
                 <Row>
                     <Col md={12} sm={6} xs={12}>
-                        {(this.state.results1 || this.state.results2) &&
                         <Button onClick={this.handleClearSearch}>Clear</Button>
-                        }
                     </Col>
 
                 </Row>
@@ -195,18 +132,18 @@ class App extends Component {
     }
 
     renderSubView() {
-        if(this.state.currView === 'search') {
+        if(this.props.currView === 'search') {
             return this.renderSearch();
         }
 
-        if(this.state.currView === 'compare') {
+        if(this.props.currView === 'compare') {
             return this.renderCompare();
         }
     }
 
     render() {
         const {Header, Content, Footer} = Layout;
-        const {currView} = this.state;
+        const {currView} = this.props;
 
         return (
             <Layout>
@@ -232,4 +169,6 @@ class App extends Component {
     }
 }
 
-export default App;
+const AppConnected = connect(mapStateToProps, mapDispatchToProps)(App)
+
+export default AppConnected;

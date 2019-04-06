@@ -1,7 +1,25 @@
 import React, {Component} from 'react'
+import {connect} from 'react-redux';
 
 import SearchResultViewComponent from './SearchResultView.component'
 import CheckboxContainer from '../../forms/checkbox/Checkbox.container'
+import {selectRow} from "../../../actionCreators";
+
+const mapStateToProps = (state) => {
+    return {
+        currView: state.currView,
+        search0: state.search0,
+        search1: state.search1
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        selectRow: (row, searchIndex) => {
+            return dispatch(selectRow(row, searchIndex))
+        }
+    }
+}
 
 class SearchResultViewContainer extends Component {
 
@@ -18,7 +36,7 @@ class SearchResultViewContainer extends Component {
             checkedValue: row.key
         })
 
-        this.props.handleSelectRow(row, this.props.index)
+        this.props.selectRow(row, this.props.index)
     }
 
     render() {
@@ -48,4 +66,6 @@ class SearchResultViewContainer extends Component {
     }
 }
 
-export default SearchResultViewContainer;
+const SearchResultViewContainerConnected = connect(mapStateToProps, mapDispatchToProps)(SearchResultViewContainer)
+
+export default SearchResultViewContainerConnected;
