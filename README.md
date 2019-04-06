@@ -32,8 +32,15 @@ CRA will start the front-end on a local IP address. Navigate here and then add s
 
 ## Release History
 
-* 0.0.1
+* 0.2
+    * Redux support in UI
+    * Exclusion of Wikipedia meta-articles
+    * Proper config object use
+
+* 0.1
     * Initial working version
+    
+    
 
 ## Meta
 
