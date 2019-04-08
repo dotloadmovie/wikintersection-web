@@ -12,6 +12,9 @@
     "redux-thunk": "^2.3.0",
     "whatwg-fetch": "^3.0.0"
   },
+  "devDependencies": {
+    "shelljs": "^0.8.3"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
