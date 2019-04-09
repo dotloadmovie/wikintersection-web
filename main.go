@@ -21,6 +21,9 @@ func main() {
 	// Echo instance
 	e := echo.New()
 
+	// Static files
+	e.Static("/", "static")
+
 	// Templates
 	t := &Template{
 		template: template.Must(template.ParseGlob("public/views/*.html")),
