@@ -9,6 +9,8 @@ This is a web client application which adds a more useful UI to the http://www.g
 
 ## Installation
 
+This builds the site as a developer-ready experience on two IPs (one for FE, one for platform)
+
 Windows, OS X & Linux - API and wrappers
 
 ```sh
@@ -23,6 +25,15 @@ Windows, OS X and Linux - Front-end
 cd ui/wikintersect
 npm install
 npm start
+```
+
+## Full build
+This assembles the server as a static site, ready for deployment
+
+OSX and Linux
+```sh
+go get
+sh build.sh
 ```
 
 ## Usage example
