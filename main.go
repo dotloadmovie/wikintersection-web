@@ -22,7 +22,7 @@ func main() {
 	e := echo.New()
 
 	// Static files
-	e.Static("/static", "assets")
+	e.Static("/", "static")
 
 	// Templates
 	t := &Template{
