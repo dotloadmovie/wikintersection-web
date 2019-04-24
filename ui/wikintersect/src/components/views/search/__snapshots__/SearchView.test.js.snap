@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`displays correctly in default mode 1`] = `
+<div
+  className="search-container"
+>
+  <Search
+    enterButton="Search"
+    onChange={[Function]}
+    onSearch={[Function]}
+    placeholder="Search for a first Wikipedia entry"
+    size="large"
+    value={null}
+  />
+  <div
+    className="spin-position"
+  >
+    <Spin
+      size="default"
+      spinning={true}
+      wrapperClassName=""
+    />
+  </div>
+</div>
+`;
+
+exports[`displays correctly with a spinner 1`] = `
+<div
+  className="search-container"
+>
+  <Search
+    enterButton="Search"
+    onChange={[Function]}
+    onSearch={[Function]}
+    placeholder="Search for a first Wikipedia entry"
+    size="large"
+    value={null}
+  />
+  <div
+    className="spin-position"
+  >
+    <Spin
+      size="default"
+      spinning={true}
+      wrapperClassName=""
+    />
+  </div>
+</div>
+`;
