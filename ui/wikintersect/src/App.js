@@ -61,7 +61,7 @@ class App extends Component {
                         {this.props.currView === 'search' &&
                         <SearchViewContainerConnected
                             index={0}
-                            placeholder="Search for a first Wikipedia entry"x
+                            placeholder="Search for a first Wikipedia entry"
                         />
                         }
                     </Col>

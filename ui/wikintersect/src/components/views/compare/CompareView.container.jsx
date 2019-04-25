@@ -43,3 +43,4 @@ class CompareViewContainer extends Component {
 const CompareViewContainerConnected = connect(mapStateToProps)(CompareViewContainer)
 
 export default CompareViewContainerConnected;
+export {CompareViewContainer};

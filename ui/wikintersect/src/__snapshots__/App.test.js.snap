@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`displays correctly 1`] = `
+<ContextProvider
+  value={
+    Object {
+      "store": Object {
+        "dispatch": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+        Symbol(observable): [Function],
+      },
+      "storeState": Object {
+        "compareResult": null,
+        "currView": "search",
+        "search0": Object {
+          "results": null,
+          "rowKey": null,
+          "search": null,
+          "serverRequestInFlight": false,
+          "value": null,
+        },
+        "search1": Object {
+          "results": null,
+          "rowKey": null,
+          "search": null,
+          "serverRequestInFlight": false,
+          "value": null,
+        },
+        "serverRequestInFlight": false,
+      },
+    }
+  }
+>
+  <Connect(App) />
+</ContextProvider>
+`;

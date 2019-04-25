@@ -69,3 +69,4 @@ class SearchViewContainer extends Component {
 const SearchViewContainerConnected = connect(mapStateToProps, mapDispatchToProps)(SearchViewContainer)
 
 export default SearchViewContainerConnected;
+export {SearchViewContainer}
