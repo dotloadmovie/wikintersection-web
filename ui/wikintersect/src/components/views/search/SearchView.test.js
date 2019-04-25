@@ -17,9 +17,18 @@ it('displays correctly in default mode', () => {
     expect(component).toMatchSnapshot();
 })
 
-props.search0.serverRequestInFlight = true;
-
 it('displays correctly with a spinner', () => {
+    props.search0.serverRequestInFlight = true;
+    const component = shallow(<SearchViewContainer {...props}/>)
+
+    expect(component).toMatchSnapshot();
+})
+
+
+it('displays properly with a result set', () => {
+    props.search0.serverRequestInFlight = false;
+    props.search0.results = ["386BSD","A/UX","Android (operating system)","Apache HTTP Server","AudioOS","BSD/OS","BSD Daemon"];
+
     const component = shallow(<SearchViewContainer {...props}/>)
 
     expect(component).toMatchSnapshot();
